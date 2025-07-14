@@ -1,9 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
+using KabanApp.Data;
+using KabanApp.Models;
 
-public class HomeController : Controller
+namespace KabanApp.Controllers
 {
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            var tasks = _context.Tasks.ToList();
+            return View(tasks);
+        }
     }
 }
