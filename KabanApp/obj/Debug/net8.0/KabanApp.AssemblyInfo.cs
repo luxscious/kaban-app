@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KabanApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b4c2356be41f99b338d9534ad94140e00213815")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3f6201cba2565708c44a8507301eaa855795e3a3")]
 [assembly: System.Reflection.AssemblyProductAttribute("KabanApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KabanApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

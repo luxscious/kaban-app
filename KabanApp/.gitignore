@@ -1,0 +1,35 @@
+# Ignore build outputs
+/bin/
+/obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore Visual Studio Code settings (if you use VS Code)
+.vscode/
+
+# Ignore SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Ignore logs
+*.log
+
+# Ignore dotnet secrets
+secrets.json
+
+# Ignore publish outputs
+/app.publish/
+/out/
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore Rider / JetBrains IDE files
+.idea/
+*.sln.iml

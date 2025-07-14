@@ -1,31 +1,102 @@
+@using KabanApp.Models
+@using TaskStatusEnum = KabanApp.Models.TaskStatus
+@model List<TaskItem>
+
 <div class="grid grid-cols-5 gap-4 p-4">
   <!-- Backlog Column -->
   <div class="bg-gray-800 rounded p-4 min-h-[400px]">
     <h2 class="text-lg font-semibold text-white mb-4">Backlog</h2>
-    <!-- Cards Here -->
+    @if (Model != null)
+    {
+      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Backlog))
+      {
+        <div class="bg-gray-700 p-3 mb-2 rounded">
+          <h3 class="text-white font-medium">@item.Title</h3>
+          <p class="text-gray-300 text-sm">@item.Description</p>
+          <div class="text-xs text-gray-400 mt-2">
+            @item.CreatedDate.ToString("MM/dd/yyyy")
+          </div>
+        </div>
+      }
+    }
   </div>
   
   <!-- Ready Column -->
   <div class="bg-gray-800 rounded p-4 min-h-[400px]">
     <h2 class="text-lg font-semibold text-white mb-4">Ready</h2>
-    <!-- Cards Here -->
+    @if (Model != null)
+    {
+      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Ready))
+      {
+        <div class="bg-blue-700 p-3 mb-2 rounded">
+          <h3 class="text-white font-medium">@item.Title</h3>
+          <p class="text-gray-300 text-sm">@item.Description</p>
+          <div class="text-xs text-gray-400 mt-2">
+            @item.CreatedDate.ToString("MM/dd/yyyy")
+          </div>
+        </div>
+      }
+    }
   </div>
   
   <!-- In Progress Column -->
   <div class="bg-gray-800 rounded p-4 min-h-[400px]">
     <h2 class="text-lg font-semibold text-white mb-4">In Progress</h2>
-    <!-- Cards Here -->
+    @if (Model != null)
+    {
+      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.InProgress))
+      {
+        <div class="bg-yellow-700 p-3 mb-2 rounded">
+          <h3 class="text-white font-medium">@item.Title</h3>
+          <p class="text-gray-300 text-sm">@item.Description</p>
+          <div class="text-xs text-gray-400 mt-2">
+            @item.CreatedDate.ToString("MM/dd/yyyy")
+          </div>
+        </div>
+      }
+    }
   </div>
   
   <!-- In Review Column -->
   <div class="bg-gray-800 rounded p-4 min-h-[400px]">
     <h2 class="text-lg font-semibold text-white mb-4">In Review</h2>
-    <!-- Cards Here -->
+    @if (Model != null)
+    {
+      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.InReview))
+      {
+        <div class="bg-purple-700 p-3 mb-2 rounded">
+          <h3 class="text-white font-medium">@item.Title</h3>
+          <p class="text-gray-300 text-sm">@item.Description</p>
+          <div class="text-xs text-gray-400 mt-2">
+            @item.CreatedDate.ToString("MM/dd/yyyy")
+          </div>
+        </div>
+      }
+    }
   </div>
   
   <!-- Done Column -->
   <div class="bg-gray-800 rounded p-4 min-h-[400px]">
     <h2 class="text-lg font-semibold text-white mb-4">Done</h2>
-    <!-- Cards Here -->
+    @if (Model != null)
+    {
+      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Done))
+      {
+        <div class="bg-green-700 p-3 mb-2 rounded">
+          <h3 class="text-white font-medium">@item.Title</h3>
+          <p class="text-gray-300 text-sm">@item.Description</p>
+          <div class="text-xs text-gray-400 mt-2">
+            @item.CreatedDate.ToString("MM/dd/yyyy")
+          </div>
+        </div>
+      }
+    }
   </div>
 </div>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center text-gray-500 mt-8">
+        <p>No tasks found. <a href="/Tasks/Create" class="text-blue-500 hover:underline">Create your first task</a>.</p>
+    </div>
+}
