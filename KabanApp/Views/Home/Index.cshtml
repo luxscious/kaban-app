@@ -3,8 +3,8 @@
 @model List<TaskItem>
 
 <div class="flex flex-col w-full h-full">
-    <div class="bg-white text-center h-20">
-        <p>This will be the header</p>
+    <div class="text-center h-20">
+       
     </div>
 
     @* Kanban Board Grid *@
@@ -49,8 +49,8 @@
             <div class="flex-shrink-0 flex-row">
                 <div class="flex flex-row items-center justify-between h-full px-4 py-4">
                     <div class="w-2/3 flex flex-row items-center space-x-2 align-middle">
-                        <div class="w-4 h-4 rounded-full border border-blue-600 bg-blue-950"></div>
-                        <h1 class="font-bold text-sm">Ready</h1>
+                        <div class="w-4 h-4 rounded-full border border-green-600 bg-green-950"></div>
+                        <h1 class="font-bold text-sm">Read</h1>
                         <div class="text-xs">
                             <p class="task-count">@(Model?.Count(t => t.Status == TaskStatusEnum.Ready) ?? 0)</p>
                         </div>
