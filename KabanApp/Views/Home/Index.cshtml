@@ -2,101 +2,178 @@
 @using TaskStatusEnum = KabanApp.Models.TaskStatus
 @model List<TaskItem>
 
-<div class="grid grid-cols-5 gap-4 p-4">
-  <!-- Backlog Column -->
-  <div class="bg-gray-800 rounded p-4 min-h-[400px]">
-    <h2 class="text-lg font-semibold text-white mb-4">Backlog</h2>
-    @if (Model != null)
-    {
-      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Backlog))
-      {
-        <div class="bg-gray-700 p-3 mb-2 rounded">
-          <h3 class="text-white font-medium">@item.Title</h3>
-          <p class="text-gray-300 text-sm">@item.Description</p>
-          <div class="text-xs text-gray-400 mt-2">
-            @item.CreatedDate.ToString("MM/dd/yyyy")
-          </div>
+<div class="flex flex-col w-full h-full">
+    <div class="bg-white text-center h-20">
+        <p>This will be the header</p>
+    </div>
+
+    @* Kanban Board Grid *@
+    <div class="grid grid-cols-5 gap-4 h-7/8 py-8 px-8">
+        
+        @* Backlog Column *@
+        <div class="bg-black text-white rounded-sm outline-gray-700 outline-1 flex flex-col h-full" data-status="Backlog">
+            <div class="flex-shrink-0 flex-row">
+                <div class="flex flex-row items-center justify-between h-full px-4 py-4">
+                    <div class="w-2/3 flex flex-row items-center space-x-2 align-middle">
+                        <div class="w-4 h-4 rounded-full border border-green-600 bg-green-950"></div>
+                        <h1 class="font-bold text-sm">Backlog</h1>
+                        <div class="text-xs">
+                            <p class="task-count">@(Model?.Count(t => t.Status == TaskStatusEnum.Backlog) ?? 0)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start justify-end w-1/3">...</div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 task-container">
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Backlog))
+                    {
+                        <div class="bg-gray-700 p-3 mb-2 rounded" draggable="true" id="task-@item.Id">
+                            <h3 class="text-white font-medium">@item.Title</h3>
+                            <p class="text-gray-300 text-sm">@item.Description</p>
+                            <div class="text-xs text-gray-400 mt-2">
+                                @item.CreatedDate.ToString("MM/dd/yyyy")
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="flex-shrink-0 flex items-end p-3 text-gray-400">
+                <h1 class="text-sm">+ Add item</h1>
+            </div>
         </div>
-      }
-    }
-  </div>
-  
-  <!-- Ready Column -->
-  <div class="bg-gray-800 rounded p-4 min-h-[400px]">
-    <h2 class="text-lg font-semibold text-white mb-4">Ready</h2>
-    @if (Model != null)
-    {
-      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Ready))
-      {
-        <div class="bg-blue-700 p-3 mb-2 rounded">
-          <h3 class="text-white font-medium">@item.Title</h3>
-          <p class="text-gray-300 text-sm">@item.Description</p>
-          <div class="text-xs text-gray-400 mt-2">
-            @item.CreatedDate.ToString("MM/dd/yyyy")
-          </div>
+
+        @* Ready Column *@
+        <div class="bg-black text-white rounded-sm outline-gray-700 outline-1 flex flex-col h-full" data-status="Ready">
+            <div class="flex-shrink-0 flex-row">
+                <div class="flex flex-row items-center justify-between h-full px-4 py-4">
+                    <div class="w-2/3 flex flex-row items-center space-x-2 align-middle">
+                        <div class="w-4 h-4 rounded-full border border-blue-600 bg-blue-950"></div>
+                        <h1 class="font-bold text-sm">Ready</h1>
+                        <div class="text-xs">
+                            <p class="task-count">@(Model?.Count(t => t.Status == TaskStatusEnum.Ready) ?? 0)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start justify-end w-1/3">...</div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 task-container">
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Ready))
+                    {
+                        <div class="bg-blue-700 p-3 mb-2 rounded" draggable="true" id="task-@item.Id">
+                            <h3 class="text-white font-medium">@item.Title</h3>
+                            <p class="text-gray-300 text-sm">@item.Description</p>
+                            <div class="text-xs text-gray-400 mt-2">@item.CreatedDate.ToString("MM/dd/yyyy")</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="flex-shrink-0 flex items-end p-3 text-gray-400">
+                <h1 class="text-sm">+ Add item</h1>
+            </div>
         </div>
-      }
-    }
-  </div>
-  
-  <!-- In Progress Column -->
-  <div class="bg-gray-800 rounded p-4 min-h-[400px]">
-    <h2 class="text-lg font-semibold text-white mb-4">In Progress</h2>
-    @if (Model != null)
-    {
-      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.InProgress))
-      {
-        <div class="bg-yellow-700 p-3 mb-2 rounded">
-          <h3 class="text-white font-medium">@item.Title</h3>
-          <p class="text-gray-300 text-sm">@item.Description</p>
-          <div class="text-xs text-gray-400 mt-2">
-            @item.CreatedDate.ToString("MM/dd/yyyy")
-          </div>
+
+        @* In Progress Column *@
+        <div class="bg-black text-white rounded-sm outline-gray-700 outline-1 flex flex-col h-full" data-status="InProgress">
+            <div class="flex-shrink-0 flex-row">
+                <div class="flex flex-row items-center justify-between h-full px-4 py-4">
+                    <div class="w-2/3 flex flex-row items-center space-x-2 align-middle">
+                        <div class="w-4 h-4 rounded-full border border-yellow-600 bg-yellow-950"></div>
+                        <h1 class="font-bold text-sm">In Progress</h1>
+                        <div class="text-xs">
+                            <p class="task-count">@(Model?.Count(t => t.Status == TaskStatusEnum.InProgress) ?? 0)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start justify-end w-1/3">...</div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 task-container">
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.InProgress))
+                    {
+                        <div class="bg-yellow-700 p-3 mb-2 rounded" draggable="true" id="task-@item.Id">
+                            <h3 class="text-white font-medium">@item.Title</h3>
+                            <p class="text-gray-300 text-sm">@item.Description</p>
+                            <div class="text-xs text-gray-400 mt-2">@item.CreatedDate.ToString("MM/dd/yyyy")</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="flex-shrink-0 flex items-end p-3 text-gray-400">
+                <h1 class="text-sm">+ Add item</h1>
+            </div>
         </div>
-      }
-    }
-  </div>
-  
-  <!-- In Review Column -->
-  <div class="bg-gray-800 rounded p-4 min-h-[400px]">
-    <h2 class="text-lg font-semibold text-white mb-4">In Review</h2>
-    @if (Model != null)
-    {
-      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.InReview))
-      {
-        <div class="bg-purple-700 p-3 mb-2 rounded">
-          <h3 class="text-white font-medium">@item.Title</h3>
-          <p class="text-gray-300 text-sm">@item.Description</p>
-          <div class="text-xs text-gray-400 mt-2">
-            @item.CreatedDate.ToString("MM/dd/yyyy")
-          </div>
+
+        @* In Review Column *@
+        <div class="bg-black text-white rounded-sm outline-gray-700 outline-1 flex flex-col h-full" data-status="InReview">
+            <div class="flex-shrink-0 flex-row">
+                <div class="flex flex-row items-center justify-between h-full px-4 py-4">
+                    <div class="w-2/3 flex flex-row items-center space-x-2 align-middle">
+                        <div class="w-4 h-4 rounded-full border border-purple-600 bg-purple-950"></div>
+                        <h1 class="font-bold text-sm">In Review</h1>
+                        <div class="text-xs">
+                            <p class="task-count">@(Model?.Count(t => t.Status == TaskStatusEnum.InReview) ?? 0)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start justify-end w-1/3">...</div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 task-container">
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.InReview))
+                    {
+                        <div class="bg-purple-700 p-3 mb-2 rounded" draggable="true" id="task-@item.Id">
+                            <h3 class="text-white font-medium">@item.Title</h3>
+                            <p class="text-gray-300 text-sm">@item.Description</p>
+                            <div class="text-xs text-gray-400 mt-2">@item.CreatedDate.ToString("MM/dd/yyyy")</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="flex-shrink-0 flex items-end p-3 text-gray-400">
+                <h1 class="text-sm">+ Add item</h1>
+            </div>
         </div>
-      }
-    }
-  </div>
-  
-  <!-- Done Column -->
-  <div class="bg-gray-800 rounded p-4 min-h-[400px]">
-    <h2 class="text-lg font-semibold text-white mb-4">Done</h2>
-    @if (Model != null)
-    {
-      @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Done))
-      {
-        <div class="bg-green-700 p-3 mb-2 rounded">
-          <h3 class="text-white font-medium">@item.Title</h3>
-          <p class="text-gray-300 text-sm">@item.Description</p>
-          <div class="text-xs text-gray-400 mt-2">
-            @item.CreatedDate.ToString("MM/dd/yyyy")
-          </div>
+
+        @* Done Column *@
+        <div class="bg-black text-white rounded-sm outline-gray-700 outline-1 flex flex-col h-full" data-status="Done">
+            <div class="flex-shrink-0 flex-row">
+                <div class="flex flex-row items-center justify-between h-full px-4 py-4">
+                    <div class="w-2/3 flex flex-row items-center space-x-2 align-middle">
+                        <div class="w-4 h-4 rounded-full border border-green-600 bg-green-950"></div>
+                        <h1 class="font-bold text-sm">Done</h1>
+                        <div class="text-xs">
+                            <p class="task-count">@(Model?.Count(t => t.Status == TaskStatusEnum.Done) ?? 0)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start justify-end w-1/3">...</div>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-8 task-container">
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.Where(t => t.Status == TaskStatusEnum.Done))
+                    {
+                        <div class="bg-green-700 p-3 mb-2 rounded" draggable="true" id="task-@item.Id">
+                            <h3 class="text-white font-medium">@item.Title</h3>
+                            <p class="text-gray-300 text-sm">@item.Description</p>
+                            <div class="text-xs text-gray-400 mt-2">@item.CreatedDate.ToString("MM/dd/yyyy")</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="flex-shrink-0 flex items-end p-3 text-gray-400">
+                <h1 class="text-sm">+ Add item</h1>
+            </div>
         </div>
-      }
-    }
-  </div>
+    </div>
 </div>
 
-@if (Model == null || !Model.Any())
-{
-    <div class="text-center text-gray-500 mt-8">
-        <p>No tasks found. <a href="/Tasks/Create" class="text-blue-500 hover:underline">Create your first task</a>.</p>
-    </div>
+@section Scripts {
+    <script type="module" src="~/js/kaban.js"></script>
 }

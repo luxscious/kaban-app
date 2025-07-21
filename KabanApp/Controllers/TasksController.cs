@@ -155,5 +155,60 @@ namespace KabanApp.Controllers
             // Always redirect to task list page (even if task wasn't found)
             return RedirectToAction(nameof(Index));
         }
+
+        /// <summary>
+        /// POST: /Tasks/UpdateStatus
+        /// Updates the status of a task via AJAX request
+        /// </summary>
+        /// <param name="request">Request containing task ID and new status</param>
+        /// <returns>JSON response indicating success or failure</returns>
+        [HttpPost]
+        public IActionResult UpdateStatus([FromBody] UpdateStatusRequest request)
+        {
+            try
+            {
+                // Find task by ID in database
+                var task = _context.Tasks.Find(request.TaskId);
+
+                if (task == null)
+                {
+                    return NotFound(new { message = "Task not found" });
+                }
+
+                // Parse the status string to enum
+                if (Enum.TryParse<Models.TaskStatus>(request.Status, out Models.TaskStatus newStatus))
+                {
+                    // Update the task status
+                    task.Status = newStatus;
+
+                    // Save changes to database
+                    _context.SaveChanges();
+
+                    return Ok(new
+                    {
+                        message = "Task status updated successfully",
+                        taskId = task.Id,
+                        newStatus = newStatus.ToString()
+                    });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Invalid status value" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while updating the task status", error = ex.Message });
+            }
+        }
     }
+}
+
+/// <summary>
+/// Request model for updating task status
+/// </summary>
+public class UpdateStatusRequest
+{
+    public int TaskId { get; set; }
+    public required string Status { get; set; }
 }

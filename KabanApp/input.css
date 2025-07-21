@@ -1,1 +1,77 @@
 @import "tailwindcss";
+
+/* Base styles */
+html,
+body {
+  height: 100%;
+  background-color: rgba(13, 17, 22, 255);
+}
+
+/* === Drag and Drop Styles === */
+
+/* Visual feedback when dragging */
+.dragging {
+  transform: rotate(5deg);
+  transition: transform 0.2s ease;
+}
+
+/* Highlight drop zones when dragging over */
+.drop-zone-highlight {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  border: 2px dashed #3b82f6 !important;
+  transition: all 0.2s ease;
+}
+
+/* Loading state for task updates */
+.updating {
+  position: relative;
+}
+
+.updating::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0.375rem;
+}
+
+.updating::before {
+  content: "⟳";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.5rem;
+  z-index: 10;
+  animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Notification styles */
+.notification {
+  animation: slideIn 0.3s ease;
+}
